@@ -1,10 +1,11 @@
 import os
 import sys
 from sklearn.model_selection import train_test_split
-from src.mlproject.exception import CustomException
-from src.mlproject.logger import logging
+from mlproject.Exception import CustomException
+from mlproject.logger import logging
 from dataclasses import dataclass
 import pandas as pd
+
 
 @dataclass
 class DataIngestionConfig:
@@ -20,30 +21,30 @@ class DataIngestion:
         logging.info("entered the data ingestion method")
 
         try:
-            df = pd.read_csv("notebook\data\stud1.csv")
-            logging.info("read the dataset as dataframe")
+            df =pd.read_csv("notebook\data\stud1.csv")
+            logging.info("read dataset as dataframe")
 
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path),exist_ok=True)
 
             df.to_csv(self.ingestion_config.raw_data_path,index=False,header=True)
 
-            logging.info("train test split initiated")
+            logging.info("train test split initiiated")
             train_set,test_set = train_test_split(df,test_size=0.2,random_state=42)
 
             train_set.to_csv(self.ingestion_config.train_data_path,index=False,header=True)
-
             test_set.to_csv(self.ingestion_config.test_data_path,index=False,header=True)
 
-            logging.info("ingestion of data is completed")
+            logging.info("ingestion is completed")
 
             return(
                 self.ingestion_config.train_data_path,
-                self.ingestion_config.test_data_path
+                self.ingestion_config.test_data_path,
             )
         except Exception as e:
-            raise CustomException(e,sys)
-        
+            raise CustomException(e,sys)    
 
 if __name__=="__main__":
-   obj = DataIngestion()
-   obj.initiate_data_ingestion()
+    obj = DataIngestion()
+    obj.initiate_data_ingestion()
+
+  
